@@ -1,90 +1,99 @@
 # Face Recognition POC
 
-## Setup
-
-### 1. Clone the Repository
+## Clone the Repository
 
 ```bash
 git clone https://github.com/Harshit-Suyal/Face-Recognition-POC.git
+
 cd Face-Recognition-POC
 ```
 
-### 2. Install Backend Dependencies
+---
+
+## Backend Setup
 
 ```bash
 cd backend
+
 npm install
 ```
 
-### 3. Install AI Service Dependencies
-
-```bash
-cd ../ai
-pip install -r requirements.txt
-```
-
-### 4. Configure Environment Variables
-
-Create a `.env` file in the backend directory and add:
+Create a `.env` file inside the `backend` folder:
 
 ```env
+PORT=5000
+
 MONGO_URI=your_mongodb_connection_string
+
+AI_SERVICE_URL=http://localhost:8000
 ```
-
-### 5. Start MongoDB
-
-Make sure your MongoDB server is running.
 
 ---
 
-## Running the Project
-
-### Start the AI Service
+## AI Service Setup
 
 ```bash
 cd ai
+
+pip install -r requirements.txt
+```
+
+---
+
+## Run the AI Service
+
+Open a terminal:
+
+```bash
+cd ai/src
+
 uvicorn main:app --reload
 ```
 
-The AI service will run on:
+AI Service:
 
 ```text
 http://localhost:8000
 ```
 
-### Start the Backend Server
+Swagger Docs:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+## Run the Backend
 
 Open a new terminal:
 
 ```bash
 cd backend
+
 npm start
 ```
 
-The backend will run on:
+Application:
 
 ```text
 http://localhost:5000
 ```
 
-### Open the Frontend
-
-Open the frontend HTML files in your browser and allow camera access when prompted.
-
 ---
 
 ## Usage
 
-### Register a Face
+### Register Face
 
-1. Enter a name.
-2. Allow camera access.
-3. Capture your face.
+1. Open `http://localhost:5000/register`
+2. Enter a name.
+3. Allow camera access.
 4. Click **Register Face**.
 
-### Search a Face
+### Search Face
 
-1. Allow camera access.
-2. Capture a face.
+1. Open `http://localhost:5000/search`
+2. Allow camera access.
 3. Click **Search Face**.
 4. View the matched user and confidence score.
