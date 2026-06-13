@@ -12,11 +12,7 @@ navigator.mediaDevices
         video.srcObject = stream;
     })
     .catch((error) => {
-
-        console.error(
-            "Unable to access webcam:",
-            error
-        );
+        console.error("Unable to access webcam:", error);
 
         document.getElementById("result").innerHTML =
             "Camera access is required.";
@@ -26,102 +22,53 @@ navigator.mediaDevices
  * Capture an image from the webcam
  * and search for the closest matching face.
  */
-document
-    .getElementById("search")
-    .addEventListener(
-        "click",
-        async () => {
+document.getElementById("search").addEventListener("click", async () => {
+    // Create a temporary canvas
+    // to capture the current frame
+    const canvas = document.createElement("canvas");
 
-            // Create a temporary canvas
-            // to capture the current frame
-            const canvas =
-                document.createElement(
-                    "canvas"
-                );
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-            canvas.width =
-                video.videoWidth;
+    canvas.getContext("2d").drawImage(video, 0, 0);
 
-            canvas.height =
-                video.videoHeight;
+    canvas.toBlob(
+        async (blob) => {
+            try {
+                const form = new FormData();
 
-            canvas
-                .getContext("2d")
-                .drawImage(
-                    video,
-                    0,
-                    0
-                );
+                form.append("image", blob);
 
-            canvas.toBlob(
-                async (blob) => {
+                // Send the captured image
+                // to the face recognition API
+                const response = await fetch("/api/search", {
+                    method: "POST",
+                    body: form
+                });
 
-                    try {
+                const result = await response.json();
 
-                        const form =
-                            new FormData();
+                // Handle API errors first
+                if (!result.success) {
+                    document.getElementById("result").innerHTML =
+                        result.message;
 
-                        form.append(
-                            "image",
-                            blob
-                        );
+                    return;
+                }
 
-                        // Send the captured image
-                        // to the face recognition API
-                        const response =
-                            await fetch(
-                                "/api/search",
-                                {
-                                    method: "POST",
-                                    body: form
-                                }
-                            );
+                // Display recognition result
+                document.getElementById("result").innerHTML = `
+                    Name: ${result.matchedUser}<br>
+                    Confidence: ${result.confidence}%<br>
+                    Status: ${result.status}
+                `;
+            } catch (error) {
+                console.error("Search Error:", error);
 
-                        const result =
-                            await response.json();
-
-                        // Handle API errors first
-                        if (!result.success) {
-
-                            document
-                                .getElementById(
-                                    "result"
-                                )
-                                .innerHTML =
-                                result.message;
-
-                            return;
-                        }
-
-                        // Display recognition result
-                        document
-                            .getElementById(
-                                "result"
-                            )
-                            .innerHTML =
-                            `
-                            Name: ${result.matchedUser}<br>
-                            Confidence: ${result.confidence}%<br>
-                            Status: ${result.status}
-                            `;
-
-                    } catch (error) {
-
-                        console.error(
-                            "Search Error:",
-                            error
-                        );
-
-                        document
-                            .getElementById(
-                                "result"
-                            )
-                            .innerHTML =
-                            "Search failed. Please try again.";
-                    }
-
-                },
-                "image/jpeg"
-            );
-        }
+                document.getElementById("result").innerHTML =
+                    "Search failed. Please try again.";
+            }
+        },
+        "image/jpeg"
     );
+});

@@ -2,54 +2,27 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Face Registration</title>
-
     <!-- Main stylesheet -->
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-
     <div class="container">
-
         <!-- Page heading -->
         <h2>Face Registration</h2>
-
         <!-- User enters name before capturing face -->
-        <input
-            type="text"
-            id="name"
-            placeholder="Enter Name"
-        >
-
+        <input type="text" id="name" placeholder="Enter Name">
         <!-- Live webcam feed -->
-        <video
-            id="video"
-            autoplay
-        ></video>
-
+        <video id="video" autoplay></video>
         <!-- Trigger registration process -->
-        <button id="capture">
-            Register Face
-        </button>
-
+        <button id="capture">Register Face</button>
     </div>
 
     <!-- Registration logic -->
     <script src="/js/register.js"></script>
 
 </body>
-
 </html>
