@@ -102,11 +102,19 @@ exports.searchFace = async (req) => {
     else if (bestScore >= 0.70)
         status = "Possible Match";
 
+    const MATCH_THRESHOLD = 0.80;
+
     return {
         success: true,
-        matchedUser: bestMatch,
+        matchedUser:
+            bestScore >= MATCH_THRESHOLD
+                ? bestMatch
+                : null,
         confidence:
             (bestScore * 100).toFixed(2),
-        status
+        status:
+            bestScore >= MATCH_THRESHOLD
+                ? status
+                : "No Match"
     };
 };

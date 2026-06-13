@@ -58,9 +58,9 @@ document.getElementById("search").addEventListener("click", async () => {
 
                 // Display recognition result
                 document.getElementById("result").innerHTML = `
-                    Name: ${result.matchedUser}<br>
-                    Confidence: ${result.confidence}%<br>
-                    Status: ${result.status}
+                Name: ${result.matchedUser || "Unknown"}<br>
+                Confidence: ${result.confidence}%<br>
+                Status: ${result.status}
                 `;
             } catch (error) {
                 console.error("Search Error:", error);
